@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, PanResponder, Text, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Animated, PanResponder, Text, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Vehicle } from '../../domain/entities/Models';
 import VehicleCard from '../components/VehicleCard';
 import { Ionicons } from '@expo/vector-icons';
 import Colors from '../../core/config/Colors';
 import ServiceLocator from '../../core/di/ServiceLocator';
+import { generateMockVehicles } from '../../data/mocks/MockDataGenerator';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.25;
@@ -82,19 +83,23 @@ export default function SwipeScreen({ onMatch }: SwipeScreenProps) {
       setSwipesRemaining(user.swipesRemaining);
     } catch (error) {
       console.error('Erreur lors du chargement des données utilisateur:', error);
+      // Valeur par défaut en cas d'erreur
+      setSwipesRemaining(10);
     }
   };
 
   const loadVehicles = async () => {
     setLoading(true);
     try {
-      const user = await apiRepository.getCurrentUser();
-      const vehiclesToSwipe = await apiRepository.getVehiclesToSwipe(user.id);
-      setVehicles(vehiclesToSwipe);
+      // Utiliser le générateur de données mock pour créer des véhicules
+      const mockVehicles = generateMockVehicles(10);
+      setVehicles(mockVehicles);
       setCurrentIndex(0);
-      setNoMoreVehicles(vehiclesToSwipe.length === 0);
+      setNoMoreVehicles(mockVehicles.length === 0);
     } catch (error) {
       console.error('Erreur lors du chargement des véhicules:', error);
+      setVehicles([]);
+      setNoMoreVehicles(true);
     } finally {
       setLoading(false);
     }
@@ -142,10 +147,20 @@ export default function SwipeScreen({ onMatch }: SwipeScreenProps) {
 
     if (liked && currentVehicle) {
       try {
-        const user = await apiRepository.getCurrentUser();
-        const match = await apiRepository.swipeVehicle(user.id, currentVehicle.id, true);
-        if (match) {
-          onMatch(match);
+        // Simuler un match avec 30% de chance
+        if (Math.random() < 0.3) {
+          // Créer un match fictif
+          const mockMatch = {
+            id: `match-${Date.now()}`,
+            vehicle: currentVehicle,
+            owner: {
+              id: currentVehicle.userId,
+              name: `Propriétaire de ${currentVehicle.make}`,
+              avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
+            },
+            createdAt: new Date().toISOString()
+          };
+          onMatch(mockMatch);
         }
       } catch (error) {
         console.error('Erreur lors du swipe:', error);
@@ -157,6 +172,7 @@ export default function SwipeScreen({ onMatch }: SwipeScreenProps) {
     if (loading) {
       return (
         <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={Colors.light.tint} />
           <Text style={styles.loadingText}>Chargement des véhicules...</Text>
         </View>
       );
