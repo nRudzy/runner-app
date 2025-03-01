@@ -182,19 +182,6 @@ export default function GroupRideDetailsScreen({ navigation, route }: GroupRideD
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButtonHeader} 
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="#333" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Détails du trajet</Text>
-        <TouchableOpacity style={styles.shareButton} onPress={shareRide}>
-          <Ionicons name="share-social-outline" size={24} color="#333" />
-        </TouchableOpacity>
-      </View>
-      
       <ScrollView style={styles.scrollView}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{ride.title}</Text>
@@ -305,6 +292,14 @@ export default function GroupRideDetailsScreen({ navigation, route }: GroupRideD
           </View>
         )}
       </ScrollView>
+      
+      <TouchableOpacity style={styles.backFloatingButton} onPress={() => navigation.goBack()}>
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+      
+      <TouchableOpacity style={styles.shareFloatingButton} onPress={shareRide}>
+        <Ionicons name="share-social-outline" size={24} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -313,27 +308,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  backButtonHeader: {
-    padding: 5,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  shareButton: {
-    padding: 5,
   },
   scrollView: {
     flex: 1,
@@ -558,5 +532,37 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 16,
+  },
+  backFloatingButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: Colors.light.tint,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  shareFloatingButton: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: Colors.light.tint,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 }); 

@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Platform } from 'react-native';
 
 import SwipeScreen from '@/components/SwipeScreen';
+import ChatScreen from '@/components/ChatScreen';
 
 export default function HomeScreen() {
   return (
