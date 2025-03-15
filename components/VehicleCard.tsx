@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, Platform } from 'react-native';
 import { Vehicle } from '../constants/Models';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/Colors';
@@ -72,10 +72,17 @@ const styles = StyleSheet.create({
     height: width * 1.3,
     borderRadius: 20,
     backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    ...(Platform.OS === 'web' 
+      ? {
+          boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)'
+        } 
+      : {
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.1,
+          shadowRadius: 5,
+        }
+    ),
     elevation: 5,
     overflow: 'hidden',
     margin: 10,
