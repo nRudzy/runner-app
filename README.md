@@ -1,55 +1,109 @@
-# Runner App - Group Rides Feature
+# Runner
 
-This feature allows Runner app users to create, join, and manage group rides with other car enthusiasts.
+Une application mobile innovante permettant aux utilisateurs de découvrir et matcher avec des véhicules selon leurs préférences, à la manière de Tinder.
 
-## Main Features
+## Fonctionnalités
 
-### 1. Group Rides List
-- Display of upcoming and past rides
-- Detailed information on each ride (date, location, participants, etc.)
-- Visual indication of rides the user is registered for
+### Interface Utilisateur
+- **Swipe de véhicules** : Interface intuitive de swipe permettant de parcourir les véhicules disponibles
+- **Filtres avancés** : Filtrage multicritères par marque, modèle, prix, année, kilométrage, etc.
+- **Profils détaillés** : Fiches véhicules complètes avec photos, spécifications et description
+- **Système de matching** : Mise en relation entre acheteurs et vendeurs suite aux likes mutuels
+- **Messagerie intégrée** : Communication directe entre les utilisateurs après un match
+- **Profil utilisateur** : Gestion des informations personnelles et préférences
 
-### 2. Group Ride Creation
-- Creation form with validation
-- Definition of title, description, date, location, and maximum number of participants
-- The user automatically becomes the organizer of the ride
+### Technique
+- **Architecture MVVM** : Séparation claire des responsabilités pour une meilleure maintenabilité
+- **TypeScript** : Typage fort pour réduire les erreurs et améliorer le développement
+- **React Native** : Développement cross-platform pour iOS et Android
+- **Animations fluides** : Transitions et animations pour une expérience utilisateur agréable
+- **Gestion d'API** : Communication complète avec le backend et gestion de l'authentification
+- **Gestion hors ligne** : Fonctionnalités de base disponibles même sans connexion internet
+- **Débogueur réseau** : Outil intégré pour visualiser et analyser les requêtes API en développement
 
-### 3. Ride Details
-- Complete display of ride information
-- List of participants with their avatars
-- Contextual actions according to user status (join, leave, cancel)
-- Sharing the ride with other users
+## Nouveautés
 
-### 4. Participant Management
-- Join an existing ride
-- Leave a ride you're registered for
-- Limitation of the number of participants according to the value defined by the organizer
+### Intégration API
+- **Client API centralisé** : Communication avec le serveur via un client axios configuré
+- **Intercepteurs de requêtes** : Gestion automatique des tokens d'authentification
+- **Gestion des erreurs** : Traitement unifié des erreurs API avec refresh de token
+- **Repositories spécialisés** : Couche d'accès aux données pour chaque entité (véhicules, utilisateurs, matchs)
 
-## Technical Structure
+### Écrans supplémentaires
+- **Écran d'inscription** : Formulaire complet avec validation
+- **Liste des matchs** : Visualisation de tous les matchs avec recherche et filtres
+- **Chat privé** : Messagerie en temps réel entre les utilisateurs matchés
+- **Écran de détails** : Visualisation complète des informations d'un véhicule
 
-### Data Models
-- `GroupRide`: Represents a group ride with its properties
-- Integration with existing `User` models
+### Débogage
+- **NetworkLogger** : Intercepteur pour visualiser les requêtes, réponses et erreurs
+- **Interface de débogueur** : Visualisation des logs réseau avec filtres et recherche
+- **Activation par geste** : Triple tap dans un coin de l'écran pour afficher le débogueur
+- **Protection des données sensibles** : Masquage automatique des informations confidentielles
 
-### Screens
-- `GroupRideScreen`: List of group rides
-- `CreateGroupRideScreen`: Creation of a new ride
-- `GroupRideDetailsScreen`: Details of a specific ride
+## Installation
 
-### Services
-- API methods to retrieve, create, and manage rides
-- Mock implementation for testing and development
+```bash
+cd runner-app
 
-## Usage
+# Installer les dépendances
+npm install
 
-1. Access the group rides screen from the main navigation
-2. View available rides or create a new ride
-3. Join an existing ride or manage your participations
-4. See the complete details of a ride and the participants
+# Lancer l'application
+npm start
+```
 
-## Future Improvements
+### Dépendances principales
 
-- Addition of notifications for ride updates
-- Integration of maps to visualize the meeting location
-- Comment system for participants
-- Photo gallery to share images from the ride
+- react-native
+- @react-navigation/native
+- axios
+- @react-native-async-storage/async-storage
+- typescript
+- react-native-gesture-handler
+- @expo/vector-icons
+
+## Structure du projet
+
+```
+src/
+├── core/               # Couche cœur de l'application
+│   ├── api/            # Services d'API et client HTTP
+│   ├── config/         # Configuration globale
+│   ├── context/        # Contextes React (auth, thème, etc.)
+│   └── utils/          # Utilitaires et helpers
+├── domain/             # Couche domaine métier
+│   ├── entities/       # Modèles de données
+│   ├── repositories/   # Interface d'accès aux données
+│   └── usecases/       # Logique métier réutilisable
+├── presentation/       # Couche présentation UI
+│   ├── components/     # Composants réutilisables
+│   ├── hooks/          # Hooks personnalisés
+│   └── screens/        # Écrans de l'application
+└── types/              # Types et interfaces globaux
+```
+
+## Architecture
+
+L'application suit une architecture en couches inspirée de Clean Architecture :
+
+1. **Présentation** : Composants d'UI et logique de présentation
+2. **Domaine** : Logique métier et modèles de données
+3. **Data** : Communication avec l'API et stockage local
+
+Cette séparation permet une meilleure testabilité et une évolution plus facile de chaque partie.
+
+## Mode développeur
+
+Pour activer le débogueur réseau :
+1. Assurez-vous d'être en mode développement
+2. Effectuez un triple tap dans le coin supérieur droit de l'écran
+3. Le panneau de débogage s'ouvrira avec les requêtes et réponses
+
+## Licence
+
+Ce projet est sous licence MIT - voir le fichier LICENSE.md pour plus de détails.
+
+## Contact
+
+Équipe de développement - email@example.com

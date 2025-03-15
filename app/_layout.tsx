@@ -1,40 +1,50 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React from 'react';
+import './polyfills'; // Importer les polyfills en premier
+import { Platform } from './polyfills'; // Importer Platform depuis notre polyfill
+import { Stack } from "expo-router";
+import { AuthProvider } from "../src/core/context/AuthContext";
+import { NetworkDebuggerProvider } from "../src/core/utils/NetworkDebuggerManager";
+import { __DEV__ } from "../src/core/config/Constants";
+import { StatusBar } from "react-native";
+import Colors from "../src/core/config/Colors";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import MainScreen from '@/src/presentation/screens/MainScreen';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+// Vérifier que Platform est correctement importé
+console.log('Platform dans _layout.tsx:', Platform);
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <SafeAreaProvider>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <MainScreen />
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <NetworkDebuggerProvider
+      config={{
+        enabled: __DEV__,
+        tapCount: 3,
+        triggerPosition: 'topRight',
+      }}
+    >
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={Colors.background}
+        translucent={false}
+      />
+      
+      <AuthProvider>
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: Colors.background,
+              elevation: 0, // Android
+              shadowOpacity: 0, // iOS
+              borderBottomWidth: 0,
+            },
+            headerTintColor: Colors.textPrimary,
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            contentStyle: {
+              backgroundColor: Colors.background,
+            },
+          }}
+        />
+      </AuthProvider>
+    </NetworkDebuggerProvider>
   );
-}
+} 
